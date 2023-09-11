@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://172.16.105.37:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/product")
 public class ProductController {
