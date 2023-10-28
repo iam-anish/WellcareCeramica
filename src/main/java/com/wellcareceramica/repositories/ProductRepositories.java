@@ -11,9 +11,13 @@ public interface ProductRepositories extends JpaRepository<Product,Integer> {
 
     Page<Product> findBySysStatus(String sysStatus,Pageable pageable);
 
+    Page<Product> findByNameLikeAndSysStatus(String name,String sysStatus,Pageable pageable);
+
     Page<Product> findBySysStatusAndCategorySysidAndTypeSysid(String sysStatus,Integer categorySysid,Integer TypeSysid,Pageable pageable);
 
     Page<Product> findBySysStatusAndCategorySysid(String sysStatus,Integer categorySysid,Pageable pageable);
 
     Product findByProductSysidAndSysStatus(Integer productId,String sysStatus);
+
+    List<Product> findByTypeSysidAndSysStatus(Integer typeSysid,String sysStatus);
 }

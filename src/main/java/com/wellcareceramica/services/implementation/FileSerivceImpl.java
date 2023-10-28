@@ -2,6 +2,7 @@ package com.wellcareceramica.services.implementation;
 
 import com.wellcareceramica.entities.Product;
 import com.wellcareceramica.excepeions.BadApiRequest;
+import com.wellcareceramica.repositories.ProductRepositories;
 import com.wellcareceramica.services.FileService;
 import com.wellcareceramica.services.ProductService;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class FileSerivceImpl implements FileService {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductRepositories productRepositories;
+
     @Override
     public String uploadFile(MultipartFile file, String path) throws IOException {
 
@@ -36,7 +40,7 @@ public class FileSerivceImpl implements FileService {
         String fileNameWithExetension = filename+extension;
         String fullPathWithFilename = path+fileNameWithExetension;
 
-        if(extension.equalsIgnoreCase(".png")||extension.equalsIgnoreCase(".jpg")||extension.equalsIgnoreCase(".jpeg")){
+        if(extension.equalsIgnoreCase(".png")||extension.equalsIgnoreCase(".jpg")||extension.equalsIgnoreCase(".jpeg")||extension.equalsIgnoreCase(".pdf")){
             //saving File
             File folder = new File(path);
             if(!folder.exists()){
@@ -83,7 +87,8 @@ public class FileSerivceImpl implements FileService {
             deleteFile(path,product.getImageId());
             String imageName = uploadFile(file, path);
             product.setImageId(imageName);
-            return product;
+            Product save = productRepositories.save(product);
+            return save;
         } catch (IOException e) {
             return null;
         }

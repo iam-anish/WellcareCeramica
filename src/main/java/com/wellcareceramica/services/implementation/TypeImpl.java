@@ -1,7 +1,10 @@
 package com.wellcareceramica.services.implementation;
 
+import com.wellcareceramica.entities.Product;
 import com.wellcareceramica.entities.Type;
+import com.wellcareceramica.repositories.ProductRepositories;
 import com.wellcareceramica.repositories.TypeRepositories;
+import com.wellcareceramica.services.ProductService;
 import com.wellcareceramica.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,12 @@ public class TypeImpl implements TypeService {
 
     @Autowired
     private TypeRepositories typeRepositories;
+
+    @Autowired
+    private ProductRepositories productRepositories;
+
+    @Autowired
+    private ProductService productService;
 
     @Override
     public Integer addType(Type type,Integer creatorId){
@@ -75,12 +84,19 @@ public class TypeImpl implements TypeService {
 
         Type type1 = typeRepositories.findByTypeSysidAndSysStatus(typeSysId,"A");
         type1.setModifierId(modifierId);
+        type1.setModifiedDate(ts);
         type1.setSysStatus("D");
         
         try {
+            List<Product> byTypeSysid = productRepositories.findByTypeSysidAndSysStatus(typeSysId,"A");
+            for (Product product:
+                 byTypeSysid) {
+                 productService.deleteProduct(product.getProductSysid(),modifierId);
+            }
             typeRepositories.save(type1);
             return  1;
         }catch (Exception e){
+            System.out.println(e);
             return 0;
         }
     }

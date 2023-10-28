@@ -1,10 +1,13 @@
 package com.wellcareceramica.services.implementation;
 
 import com.wellcareceramica.entities.Category;
+import com.wellcareceramica.entities.Type;
 import com.wellcareceramica.entities.User;
 import com.wellcareceramica.repositories.CategoryRepositories;
+import com.wellcareceramica.repositories.TypeRepositories;
 import com.wellcareceramica.repositories.UserRepositories;
 import com.wellcareceramica.services.CategoryService;
+import com.wellcareceramica.services.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,12 @@ public class CategoryImpl implements CategoryService {
 
     @Autowired
     private CategoryRepositories categoryRepositories;
+
+    @Autowired
+    private TypeRepositories typeRepositories;
+
+    @Autowired
+    private TypeService typeService;
 
     @Autowired
     private UserRepositories userRepositories;
@@ -71,6 +80,11 @@ public class CategoryImpl implements CategoryService {
         category1.setModifierId(modifierId);
 
         try {
+            List<Type> typeList = typeRepositories.findByCategorySysidAndSysStatus(categoryId, "A");
+            for (Type type:
+                 typeList) {
+                 typeService.deleteType(type.getTypeSysid(),modifierId);
+            }
             categoryRepositories.save(category1);
             return 1;
         }catch (Exception e){

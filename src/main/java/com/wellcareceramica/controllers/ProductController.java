@@ -56,6 +56,14 @@ public class ProductController {
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<PageableResponse<Product>> getFilter(
+            @RequestParam(name = "name", defaultValue = "*", required = false) String name
+    ){
+        PageableResponse<Product> productList = productService.filterProduct("%"+name+"%");
+        return new ResponseEntity<>(productList,HttpStatus.OK);
+    }
+
     @PutMapping("/update/{modifierId}")
     public ResponseEntity<Product> updateProduct(@RequestBody Product product,@PathVariable Integer modifierId){
         Product product1 = productService.updateProduct(product,modifierId);

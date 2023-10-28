@@ -28,6 +28,9 @@ public class ProductImpl implements ProductService {
     @Value("${product.image.path}")
     private String imagePath;
 
+    @Autowired
+    private FileService fileService;
+
     @Override
     public Product addProduct(Product product,Integer creatorId) {
 
@@ -73,6 +76,15 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
+    public PageableResponse<Product> filterProduct(String name) {
+
+        Sort sort = Sort.by("name").descending();
+        Pageable pageable = PageRequest.of(0,1000,sort);
+        Page<Product> page = productRepositories.findByNameLikeAndSysStatus(name,"A",pageable);
+        return Helper.getPageableResponse(page,Product.class);
+    }
+
+    @Override
     public Product updateProduct(Product product,Integer modifierId) {
 
         Date date = new Date();
@@ -101,6 +113,7 @@ public class ProductImpl implements ProductService {
         product.setModifierId(modifierId);
 
         try{
+            fileService.deleteFile(imagePath,product.getImageId());
             productRepositories.save(product);
             return 1;
         }catch (Exception e){

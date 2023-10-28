@@ -13,7 +13,10 @@ public interface ProductService {
 
     PageableResponse<Product> getProduct(Integer categorySysid, Integer typeSysid, int pageNumber, int pageSize, String sortBy, String sortDir);
 
+    PageableResponse<Product> filterProduct(String name);
+
     Product updateProduct(Product product,Integer modifierId);
 
     Integer deleteProduct(Integer productId,Integer modifierId);
+
 }
