@@ -1,5 +1,4 @@
 package com.wellcareceramica.services.implementation;
-
 import com.wellcareceramica.entities.PageableResponse;
 import com.wellcareceramica.entities.Product;
 import com.wellcareceramica.helper.Helper;
@@ -13,11 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class ProductImpl implements ProductService {
